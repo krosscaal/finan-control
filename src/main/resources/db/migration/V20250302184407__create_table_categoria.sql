@@ -4,3 +4,4 @@ CREATE TABLE if not exists tb_categoria
     nome         VARCHAR(100)                            NOT NULL,
     CONSTRAINT pk_tb_categoria PRIMARY KEY (id_categoria)
 );
+
