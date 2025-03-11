@@ -3,9 +3,9 @@
  * owned by Krossft.
  */
 
-package financial_control_api.model.dto;
+package financial_control_api.domain.dto;
 
-import financial_control_api.model.Endereco;
+import financial_control_api.domain.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

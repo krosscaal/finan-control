@@ -5,7 +5,7 @@
 
 package financial_control_api.resource;
 
-import financial_control_api.model.Categoria;
+import financial_control_api.domain.model.Categoria;
 import financial_control_api.service.CategoriaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

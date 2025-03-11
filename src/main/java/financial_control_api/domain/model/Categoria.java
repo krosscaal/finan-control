@@ -3,7 +3,7 @@
  * owned by Krossft.
  */
 
-package financial_control_api.model;
+package financial_control_api.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

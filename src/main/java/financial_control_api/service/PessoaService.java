@@ -8,29 +8,28 @@ package financial_control_api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import financial_control_api.exception.EntidadeNaoEncontradaException;
 import financial_control_api.exception.EntidadeemUsoException;
-import financial_control_api.model.Endereco;
-import financial_control_api.model.Pessoa;
-import financial_control_api.model.dto.PessoaDTO;
+import financial_control_api.domain.model.Endereco;
+import financial_control_api.domain.model.Pessoa;
+import financial_control_api.domain.dto.PessoaDTO;
 import financial_control_api.repository.PessoaRepository;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
-import org.yaml.snakeyaml.events.Event;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class PessoaService {
 
+    private static final Logger log = LogManager.getLogger(PessoaService.class);
     @Autowired
     PessoaRepository repository;
 
@@ -69,7 +68,7 @@ public class PessoaService {
         }
 
     }
-    private Pessoa buscarPessoaPorId(final Long id) {
+    public Pessoa buscarPessoaPorId(final Long id) {
         return repository.findById(id).orElseThrow(()-> new EntidadeNaoEncontradaException(String.format("Não existe Pessoa com id %d", id)));
     }
 
@@ -108,7 +107,8 @@ public class PessoaService {
         /* usando ObjectMapper para mapear a Map<> -> Class destino*/
         ObjectMapper objectMapper = new ObjectMapper();
         Pessoa pessoaOrigem = objectMapper.convertValue(camposOrigem, Pessoa.class);
-        System.out.println(pessoaOrigem);
+        log.log(Level.INFO, pessoaOrigem);
+
 
         /* loop do Map<>*/
         camposOrigem.forEach((nomePropiedade, valorPropiedade)->{
@@ -121,9 +121,12 @@ public class PessoaService {
                     Field field = ReflectionUtils.findField(Endereco.class, campoEndereco);
                     if (field != null) {
                         field.setAccessible(true);
-                        Object novoValor = ReflectionUtils.getField(field, enderecoOrigem);
-                        if (novoValor != null) {
-                            ReflectionUtils.setField(field, enderecoDestino, novoValor);
+                        Object novoValorEmEndereco = ReflectionUtils.getField(field, enderecoOrigem);
+
+                        log.log(Level.INFO, campoEndereco +" = " + valorEndereco + " = " + novoValorEmEndereco);
+
+                        if (novoValorEmEndereco != null) {
+                            ReflectionUtils.setField(field, enderecoDestino, novoValorEmEndereco);
                         }
                     }
                 });
@@ -133,10 +136,12 @@ public class PessoaService {
                 Field field = ReflectionUtils.findField(Pessoa.class, nomePropiedade);
                 if (field != null) {
                     field.setAccessible(true); //necessario para acessar atributos private
-                    Object novoValor = ReflectionUtils.getField(field, pessoaOrigem);//pegando o valor do Map<>
-                    System.out.println(nomePropiedade + " = " + valorPropiedade + " = " + novoValor);
-                    if (novoValor != null) {
-                        ReflectionUtils.setField(field, pessoaDestino, novoValor);
+                    Object novoValorEmPessoa = ReflectionUtils.getField(field, pessoaOrigem);//pegando o valor do Map<>
+
+                    log.log(Level.INFO, nomePropiedade + " = " + valorPropiedade + " = " + novoValorEmPessoa);
+
+                    if (novoValorEmPessoa != null) {
+                        ReflectionUtils.setField(field, pessoaDestino, novoValorEmPessoa);
                     }
                 }
             }

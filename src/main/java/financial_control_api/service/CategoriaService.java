@@ -5,7 +5,8 @@
 
 package financial_control_api.service;
 
-import financial_control_api.model.Categoria;
+import financial_control_api.domain.model.Categoria;
+import financial_control_api.exception.EntidadeNaoEncontradaException;
 import financial_control_api.repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,11 @@ public class CategoriaService {
         return repository.save(categoria);
     }
 
-    public Optional<Categoria> buscarPorId(Long id) {
+    public Optional<Categoria> buscarPorId(final Long id) {
         return repository.findById(id);
+    }
+
+    public Categoria buscarCategoriaPorId(final Long id) {
+        return repository.findById(id).orElseThrow(()->new EntidadeNaoEncontradaException(String.format("Não existe Categoria com id %d", id)));
     }
 }

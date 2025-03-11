@@ -5,6 +5,7 @@
 
 package financial_control_api.exceptionHandler;
 
+import financial_control_api.exception.BusinessException;
 import financial_control_api.exception.EntidadeNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -74,6 +75,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 messageSource.getMessage("error.recurso.not.found", null, LocaleContextHolder.getLocale()),
                 ex.getMessage());
         return handleExceptionInternal(ex, apiErrorRequest, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
+        ApiErrorRequest apiErrorRequest = new ApiErrorRequest(
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now().format(dataFormatada),
+                messageSource.getMessage("error.pessoa.not.active", null, LocaleContextHolder.getLocale()),
+                ex.getMessage());
+        return handleExceptionInternal(ex, apiErrorRequest, new HttpHeaders(), HttpStatus.CONFLICT, request);
 
     }
 

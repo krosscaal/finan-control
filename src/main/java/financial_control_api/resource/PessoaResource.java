@@ -6,10 +6,9 @@
 package financial_control_api.resource;
 
 import financial_control_api.event.RecursoCriadoEvent;
-import financial_control_api.model.Endereco;
-import financial_control_api.model.Pessoa;
-import financial_control_api.model.dto.PessoaDTO;
-import financial_control_api.repository.PessoaRepository;
+import financial_control_api.domain.model.Endereco;
+import financial_control_api.domain.model.Pessoa;
+import financial_control_api.domain.dto.PessoaDTO;
 import financial_control_api.service.PessoaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -28,9 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Map;
 
 @RestController
