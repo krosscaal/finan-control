@@ -11,11 +11,18 @@ import financial_control_api.domain.model.Lancamento;
 import financial_control_api.domain.model.Pessoa;
 import financial_control_api.exception.BusinessException;
 import financial_control_api.exception.EntidadeNaoEncontradaException;
+import financial_control_api.exception.EntidadeemUsoException;
+import financial_control_api.repository.filter.LancamentoFilter;
 import financial_control_api.repository.LancamentoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +39,18 @@ public class LancamentoService {
 
     public List<Lancamento> buscarTodos() {
         return repository.findAll();
+    }
+
+    public List<Lancamento> buscarPorFiltro(LancamentoFilter filter) {
+        return repository.buscarLancamentoFiltro(filter);
+    }
+
+    public List<Lancamento> buscarPorFiltroParams(final String descricao, final LocalDate dataVencimentoDe, final LocalDate dataVencimentoAte) {
+        return repository.buscarLancamentoFiltroParams(descricao, dataVencimentoDe, dataVencimentoAte);
+    }
+
+    public Page<Lancamento> buscarPorFiltroPaginado(LancamentoFilter filter, Pageable pageable) {
+        return repository.buscarLancamentoFiltroPaginado(filter, pageable);
     }
 
     public Lancamento buscarLancamentoPorId(final Long id) {
@@ -58,5 +77,19 @@ public class LancamentoService {
                 dto.getTipo(),
                 categoria,
                 pessoa);
+    }
+    public void apagarLancamento(final Long id){
+        try {
+            buscarLancamentoPorId(id);
+            repository.deleteById(id);
+
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntidadeemUsoException(String.format("Lançamento com id %d, não pode ser removido pois está em uso", id));
+        }
+    }
+
+    public Page<Lancamento> buscarTodosPaginado(Pageable pageable) {
+
+        return new PageImpl<>(repository.findAll(pageable).stream().toList(), pageable, repository.findAll().size());
     }
 }
