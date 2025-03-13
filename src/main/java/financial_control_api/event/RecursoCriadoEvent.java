@@ -5,7 +5,7 @@
 
 package financial_control_api.event;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationEvent;
 
 import java.io.Serial;

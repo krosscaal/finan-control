@@ -8,7 +8,7 @@ package financial_control_api.service;
 import financial_control_api.domain.model.Categoria;
 import financial_control_api.exception.EntidadeNaoEncontradaException;
 import financial_control_api.repository.CategoriaRepository;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

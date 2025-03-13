@@ -6,7 +6,7 @@
 package financial_control_api.event.listener;
 
 import financial_control_api.event.RecursoCriadoEvent;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

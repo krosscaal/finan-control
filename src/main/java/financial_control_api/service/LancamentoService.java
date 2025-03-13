@@ -14,7 +14,7 @@ import financial_control_api.exception.EntidadeNaoEncontradaException;
 import financial_control_api.exception.EntidadeemUsoException;
 import financial_control_api.repository.filter.LancamentoFilter;
 import financial_control_api.repository.LancamentoRepository;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;

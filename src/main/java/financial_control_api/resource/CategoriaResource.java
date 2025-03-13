@@ -7,8 +7,8 @@ package financial_control_api.resource;
 
 import financial_control_api.domain.model.Categoria;
 import financial_control_api.service.CategoriaService;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
