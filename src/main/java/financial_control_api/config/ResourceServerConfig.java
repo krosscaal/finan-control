@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebSecurity
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String SECRET_KEY = System.getenv("SECRET_KEY");
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,7 +65,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        var secretKey = new SecretKeySpec("3032885ba9cd6621bcc4e7d6b6c35c2b".getBytes(), "HmacSHA256");
+        var secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
@@ -93,5 +96,11 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
             return grantedAuthorities;
         });
         return jwtAuthenticationConverter;
+    }
+
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return super.userDetailsServiceBean();
     }
 }
